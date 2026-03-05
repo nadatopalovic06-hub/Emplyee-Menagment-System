@@ -13,7 +13,7 @@ An application for managing employee data, featuring secure authentication and d
 
 ##  Tech Stack
 * **Language**:  Python 
-* **Libraries**: [Napiši npr. Matplotlib (visualization), Statistics(Data analysis), Datetime(Time based calculations)
+* **Libraries**: Matplotlib (visualization), Statistics(Data analysis), Datetime(Time based calculations)
 
 ##  Analytics
 The application includes a specialized module for data visualization, helping management understand salary trends and employee retention (years of service) at a glance.
