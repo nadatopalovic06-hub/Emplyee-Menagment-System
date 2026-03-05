@@ -1,49 +1,48 @@
-# -*- coding: utf-8 -*-
 """
 Created on Mon Dec  2 22:07:59 2024
 
 @author: nada
 """
 
-#učitavanje radnih mesta iz fajla
-def loadRadnaMesta():
+# loading job positions from file
+def loadJobPositions():
     for line in open('radnaMesta.txt', 'r').readlines():
         if len(line) > 1:
-            rm = str2rm(line)
-            radnaMesta.append(rm)
+            jp = str2JobPosition(line)
+            jobPositions.append(jp)
 
 
-#upisuje radna mesta nazad u fajl
-#mada ovde nema promena
-def saveRadnaMesta():
-    fajl = open('radnaMesta.txt', 'w')
-    for rm in radnaMesta:
-        fajl.write(rm2str(rm))
-        fajl.write('\n')
-    fajl.close()
+# writes job positions back to file
+# although there are usually no changes here
+def saveJobPositions():
+    file = open('radnaMesta.txt', 'w')
+    for jp in jobPositions:
+        file.write(jobPosition2str(jp))
+        file.write('\n')
+    file.close()
     
     
-#pretvaranje linije iz fajla u rečnik    
-def str2rm(line):
-    id, naziv = line.strip().split("|")
-    rm = {'id': id,
-            'naziv': naziv}
-    return rm
+# converting a line from file into a dictionary    
+def str2JobPosition(line):
+    id, name = line.strip().split("|")
+    jp = {'id': id,
+            'name': name}
+    return jp
 
 
-#priprema string za upisivanje u fajl
-def rm2str(rad):   
-    return '|'.join([rad['id'], rad['naziv']])
+# prepares string for writing into file
+def jobPosition2str(rad):   
+    return '|'.join([rad['id'], rad['name']])
     
 
-#trazi radno mesto po nazivu
-def findRadnoMesto(naziv): 
-    for rm in radnaMesta:
-        if rm['naziv'] == naziv:
+# searches job position by name
+def findJobPosition(name): 
+    for jp in jobPositions:
+        if jp['name'] == name:
             return True
     return False
 
 
 print(__name__)  
-radnaMesta = []
-loadRadnaMesta() 
+jobPositions = []
+loadJobPositions()
