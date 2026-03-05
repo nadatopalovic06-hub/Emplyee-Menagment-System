@@ -1,0 +1,6 @@
+r1|java programer
+r2|devops
+r3|c# programer
+r4|pravnik
+r5|psiholog
+r6|menadzer
