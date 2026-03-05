@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created on Sun Dec  1 21:46:17 2024
 
@@ -13,188 +12,198 @@ from dateutil.relativedelta import relativedelta
 import statistics
 from datetime import datetime
 
-#radna mesta samo kao šifarnik
+# job positions act only as a reference list
 
 def main():
     print()
-    print( "Evidencija radnika")
-    print( "====================")
+    print("Employee Records")
+    print("====================")
     print()
     if not login():
-        print( "\nNiste uneli postojece ime i lozinku!")
+        print("\nInvalid username or password!")
         return
-    komanda = '0'
-    while komanda != 'X':
-        komanda = menu()
-        if komanda == '1':
-            findRadnik()
-        elif komanda == '2':
-            searchRadniks()
-        elif komanda == '3':
-            listRadniks()
-        elif komanda == '4':
-            updateRadnik()
-        elif komanda == '5':
-            addRadnik()
-        elif komanda == '6':
-            prosecnaPlata()
-        elif komanda == '7':
-            plateRadnika()
-        elif komanda == '8':
-            povecanjePlate()
-        elif komanda == '9':
-            duzinaZaposlenja()
-    print( "Dovidjenja.")
+    command = '0'
+    while command != 'X':
+        command = menu()
+        if command == '1':
+            findEmployee()
+        elif command == '2':
+            searchEmployees()
+        elif command == '3':
+            listEmployees()
+        elif command == '4':
+            updateEmployee()
+        elif command == '5':
+            addEmployee()
+        elif command == '6':
+            averageSalary()
+        elif command == '7':
+            employeeSalaries()
+        elif command == '8':
+            salaryIncrease()
+        elif command == '9':
+            employmentLength()
+    print("Goodbye.")
+
 
 def menu():
     printMenu()
     command = input(">> ")
     while command.upper() not in ('1', '2', '3', '4', '5', '6', '7', '8', '9', 'X'):
-        print( "\nUneli ste pogresnu komandu.\n")
+        print("\nInvalid command.\n")
         printMenu()
         command = input(">> ")
     return command.upper()
 
+
 def printMenu():
-    print( "\nIzaberite opciju:")
-    print( "  1 - pronalazenje radnika")
-    print( "  2 - pretrazivanje radnika")
-    print( "  3 - pregled svih radnika")
-    print( "  4 - izmena podataka o radniku")
-    print( "  5 - dodavanje novog radnika")
-    print( "  6 - prosecna plata")
-    print( "  7 - plate radnika")
-    print( "  8 - povecanje plate")
-    print( "  9 - duzina zaposlenja")
-    print( "  x - izlaz iz programa")
+    print("\nChoose an option:")
+    print("  1 - find employee")
+    print("  2 - search employees")
+    print("  3 - list all employees")
+    print("  4 - update employee data")
+    print("  5 - add new employee")
+    print("  6 - average salary")
+    print("  7 - employee salaries")
+    print("  8 - salary increase")
+    print("  9 - employment length")
+    print("  x - exit program")
+
 
 def login():
-    username = input("Korisnicko ime >> ")
-    password = input("Lozinka >> ")
+    username = input("Username >> ")
+    password = input("Password >> ")
     return Korisnici.login(username, password)
 
-# id broj je jedinstven (trebalo bi da bude), 
-# pa se tako pronalazi samo jedan radnik
-def findRadnik():
-    print( "[1] Pronalazenje radnika\n")
-    id = input("Unesite id broj: ")
-    rad = Radnici.findRadnik(id)
-    if rad != None:
+
+# id number should be unique,
+# therefore only one employee should be found
+def findEmployee():
+    print("[1] Find employee\n")
+    id = input("Enter id number: ")
+    emp = Radnici.findRadnik(id)
+    if emp != None:
         print(Radnici.formatHeader())
-        print(Radnici.formatRadnik(rad))
+        print(Radnici.formatRadnik(emp))
     else:
-        print("Ne postoji radnik sa id brojem", id)
-    
-#više radnika može imati isto prezime, pa je rezultat lista
-def searchRadniks():
-    print( "[2] Pretrazivanje radnika\n")
-    prezime = input("Unesite prezime: ")
-    radList = Radnici.searchRadniks('prezime', prezime)
-    if len(radList) == 0:
-        print("Ne postoje takvi radnici.")
+        print("No employee with id number", id)
+
+
+# multiple employees can have the same last name
+def searchEmployees():
+    print("[2] Search employees\n")
+    lastName = input("Enter last name: ")
+    empList = Radnici.searchRadniks('prezime', lastName)
+    if len(empList) == 0:
+        print("No employees found.")
     else:
         print(Radnici.formatHeader())
-        print(Radnici.formatRadniks(radList))
-    
-#prikazivanje svih radnika
-def listRadniks():
-    print( "[3] Pregled svih studenata sortiranih po prezimenu\n")
-    #Studenti.sortStudents('prezime')
+        print(Radnici.formatRadniks(empList))
+
+
+# displaying all employees
+def listEmployees():
+    print("[3] List of all employees sorted by last name\n")
     Radnici.sortirajRadnike('prezime')
     print(Radnici.formatHeader())
     print(Radnici.formatAllRadniks())
 
-#promena radnog mesta radniku
-#proverava se da li uneto radno mesto postoji    
-def updateRadnik():
-    print( "[4] Izmena podataka o studentu\n")
-    id = input("Unesite broj indeksa >> ")
-    rad = Radnici.findRadnik(id)
-    if rad == None:
-        print ("Ne postoji radnik sa datim brojem indeksa.")
+
+# change employee job position
+# checks if the entered job position exists
+def updateEmployee():
+    print("[4] Update employee data\n")
+    id = input("Enter employee id >> ")
+    emp = Radnici.findRadnik(id)
+    if emp == None:
+        print("Employee with this id does not exist.")
     else:
-        print( Radnici.formatHeader())
-        print( Radnici.formatRadnik(rad)) 
-        radnoMesto = input("Unesite novo radno mesto: ")
-        while not(RadnaMesta.findRadnoMesto(radnoMesto)):
-            radnoMesto = input("Unesite novo radno mesto: ")
-        rad['radnoMesto'] = radnoMesto
+        print(Radnici.formatHeader())
+        print(Radnici.formatRadnik(emp)) 
+        jobPosition = input("Enter new job position: ")
+        while not(RadnaMesta.findRadnoMesto(jobPosition)):
+            jobPosition = input("Enter new job position: ")
+        emp['radnoMesto'] = jobPosition
         Radnici.saveRadniks()
         
 
-#dodavanje novog radnika
-#za id radnika uzima se sledeći slobodan broj
-def addRadnik():
-    print( "[5] Upis novog studenta\n")
-    rad = {}
+# adding a new employee
+# next available id is used
+def addEmployee():
+    print("[5] Add new employee\n")
+    emp = {}
     id = Radnici.maxId()
-    rad['id'] = str(id)
-    rad['ime'] = input("Unesite ime: ")
-    rad['prezime'] = input("Unesite prezime: ")
-    rad['datumRodjenja'] = input("Unesite datum rodjenja: ")
-    rad['datumZaposlenja'] = input("Unesite datum zaposlenja: ")
-    rad['email'] = input("Unesite email: ")
-    rad['plata'] = input("Unesite platu: ")
-    radnoMesto = input("Unesite radno mesto: ")
-    if not(RadnaMesta.findRadnoMesto(radnoMesto)):
-        radnoMesto = ''
-    rad['radnoMesto'] = radnoMesto
-    Radnici.addRadnik(rad)
+    emp['id'] = str(id)
+    emp['ime'] = input("Enter name: ")
+    emp['prezime'] = input("Enter last name: ")
+    emp['datumRodjenja'] = input("Enter birth date: ")
+    emp['datumZaposlenja'] = input("Enter employment date: ")
+    emp['email'] = input("Enter email: ")
+    emp['plata'] = input("Enter salary: ")
+    jobPosition = input("Enter job position: ")
+    if not(RadnaMesta.findRadnoMesto(jobPosition)):
+        jobPosition = ''
+    emp['radnoMesto'] = jobPosition
+    Radnici.addRadnik(emp)
     Radnici.saveRadniks()
     
-#prosečna plata svih radnika
-def prosecnaPlata():
-    print( "[6] Prosecna plata\n")
-    radnici = Radnici.sviRadnici()
-    plate = []
-    for r in radnici:
-        plate.append(float(r['plata']))
-    prosek = statistics.mean(plate)
-    print('Prosecna plata je:', prosek)
 
-#prikazivanje plata radnika na stubičastom grafikonu
-def plateRadnika():
-    print( "[7] Plate radnika\n")
-    radnici = Radnici.sviRadnici()
-    imenaPrezimena = []
-    plate = []
-    for r in radnici:
-        imenaPrezimena.append(r['ime'] + ' ' + r['prezime'])
-        plate.append(float(r['plata']))
-    plt.bar(imenaPrezimena, plate)
+# average salary of all employees
+def averageSalary():
+    print("[6] Average salary\n")
+    employees = Radnici.sviRadnici()
+    salaries = []
+    for r in employees:
+        salaries.append(float(r['plata']))
+    avg = statistics.mean(salaries)
+    print('Average salary is:', avg)
+
+
+# displaying employee salaries on a bar chart
+def employeeSalaries():
+    print("[7] Employee salaries\n")
+    employees = Radnici.sviRadnici()
+    names = []
+    salaries = []
+    for r in employees:
+        names.append(r['ime'] + ' ' + r['prezime'])
+        salaries.append(float(r['plata']))
+    plt.bar(names, salaries)
     plt.xticks(rotation=30)
     plt.show()
     
-#povećanje plate za 10% radnicima koji rade duže od godinu dana   
-def povecanjePlate():
-    print( "[8] Povecanje plate\n")
-    radnici = Radnici.sviRadnici()
-    danasnja_godina=datetime.today().year
-    danasnji_mesec=datetime.today().month
-    for r in radnici:
-        delovi_datuma=r['datumZaposlenja'].split("-")
-        godina_Z=int(delovi_datuma[0])
-        mesecZ=int(delovi_datuma[1])
-        staz_u_mesecima=(danasnja_godina-godina_Z)*12+(danasnji_mesec-mesecZ)
-        if staz_u_mesecima>=12:
-            nova_plata=float(r['plata'])*1.1
-            r['plata']= str(round(nova_plata,2))
+
+# salary increase of 10% for employees working more than one year
+def salaryIncrease():
+    print("[8] Salary increase\n")
+    employees = Radnici.sviRadnici()
+    current_year = datetime.today().year
+    current_month = datetime.today().month
+    for r in employees:
+        parts = r['datumZaposlenja'].split("-")
+        year_employed = int(parts[0])
+        month_employed = int(parts[1])
+        months_of_service = (current_year - year_employed)*12 + (current_month - month_employed)
+        if months_of_service >= 12:
+            new_salary = float(r['plata']) * 1.1
+            r['plata'] = str(round(new_salary,2))
         Radnici.saveRadniks()
 
-#dužina zaposlenja u godinama        
-def duzinaZaposlenja():
-    print( "[9] Duzina zaposlenja\n")
-    radnici = Radnici.sviRadnici()
-    danasnja_godina=datetime.today().year
-    imena = []
-    godineStaza = []
-    for r in radnici:
-        godinaZ=int(r['datumZaposlenja'].split("-")[0])
-        staz=danasnja_godina-godinaZ
-        imena.append(r['ime']+" "+r['prezime'])
-        godineStaza.append(staz)
+
+# employment length in years        
+def employmentLength():
+    print("[9] Employment length\n")
+    employees = Radnici.sviRadnici()
+    current_year = datetime.today().year
+    names = []
+    years = []
+    for r in employees:
+        year_employed = int(r['datumZaposlenja'].split("-")[0])
+        service = current_year - year_employed
+        names.append(r['ime'] + " " + r['prezime'])
+        years.append(service)
         
-    plt.bar(imena, godineStaza)
+    plt.bar(names, years)
     plt.xticks(rotation=30)
     plt.show()
     
