@@ -9,7 +9,7 @@ from datetime import date, datetime
 
 
 #učitavanje radnika iz fajla
-def loadRadniks():
+def loadWorkers():
     for line in open('radnici.txt', 'r').readlines():
         if len(line) > 1:
             rad = str2Radnik(line)
@@ -110,3 +110,4 @@ def sortirajRadnike(key):
 print(__name__)  
 radnici = []
 loadRadniks() 
+
